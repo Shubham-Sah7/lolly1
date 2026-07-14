@@ -1466,7 +1466,7 @@ export default function Page() {
             whileInView="show"
             viewport={{ once: true, margin: "-60px" }}
           >
-            <Accordion type="single" collapsible className="w-full space-y-4">
+            <Accordion type="single" collapsible className="w-full">
 
               {[
                 {
@@ -1511,11 +1511,11 @@ export default function Page() {
                 },
               ].map((item) => (
                 <motion.div key={item.value} variants={fadeUp}>
-                  <AccordionItem value={item.value} className="bg-white dark:bg-zinc-950 border border-zinc-200/60 dark:border-zinc-800/60 rounded-2xl px-6 py-2 shadow-sm">
-                    <AccordionTrigger className="text-sm font-bold text-zinc-900 dark:text-white hover:no-underline">
+                  <AccordionItem value={item.value} className="border-b border-zinc-200 dark:border-zinc-800 last:border-b-0">
+                    <AccordionTrigger className="text-base font-bold text-zinc-900 dark:text-white py-6">
                       {item.q}
                     </AccordionTrigger>
-                    <AccordionContent className="text-zinc-500 dark:text-zinc-400 text-xs md:text-sm leading-relaxed pt-2">
+                    <AccordionContent className="text-zinc-500 dark:text-zinc-400 text-sm leading-relaxed pb-6">
                       {item.a}
                     </AccordionContent>
                   </AccordionItem>
