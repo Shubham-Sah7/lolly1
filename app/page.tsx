@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react"
 import { motion } from "framer-motion"
+import { useTheme } from "next-themes"
 import {
   ArrowRight, 
   Check, 
@@ -30,9 +31,14 @@ import { Button } from "@/components/ui/button"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 
 export default function Page() {
-  // Theme dark mode toggle simulation
-  const [darkMode, setDarkMode] = useState(false)
-  
+  // Theme is owned by next-themes (see components/theme-provider.tsx) -
+  // it already handles the "d" hotkey and applying the "dark" class,
+  // so this only needs to read/set it, not duplicate that logic.
+  const { resolvedTheme, setTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => setMounted(true), [])
+  const darkMode = mounted && resolvedTheme === "dark"
+
   // Interactive search query in Discovery Section
   const [searchQuery, setSearchQuery] = useState("loyalty programme mentions US")
   
@@ -44,26 +50,6 @@ export default function Page() {
   
   // Copy success indicator
   const [copiedText, setCopiedText] = useState(false)
-
-  // Listen to keyboard shortcut 'd' for dark mode toggle
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key.toLowerCase() === "d" && !["input", "textarea"].includes(document.activeElement?.tagName.toLowerCase() || "")) {
-        setDarkMode(prev => !prev)
-      }
-    }
-    window.addEventListener("keydown", handleKeyDown)
-    return () => window.removeEventListener("keydown", handleKeyDown)
-  }, [])
-
-  // Apply theme class
-  useEffect(() => {
-    if (darkMode) {
-      document.documentElement.classList.add("dark")
-    } else {
-      document.documentElement.classList.remove("dark")
-    }
-  }, [darkMode])
 
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text)
@@ -97,7 +83,7 @@ export default function Page() {
   }
 
   return (
-    <div className={`min-h-screen font-sans antialiased transition-colors duration-300 ${darkMode ? "bg-zinc-950 text-zinc-50" : "bg-[#fbfaf7] text-zinc-900"}`}>
+    <div className="min-h-screen font-sans antialiased transition-colors duration-300 bg-[#fbfaf7] text-zinc-900 dark:bg-zinc-950 dark:text-zinc-50">
       
       {/* 1. Announcement Banner */}
       <div className="w-full bg-[#0b0c10] text-white text-xs py-2.5 px-4 text-center font-medium border-b border-zinc-800">
@@ -130,12 +116,13 @@ export default function Page() {
 
           {/* Actions */}
           <div className="flex items-center gap-4">
-            <button 
-              onClick={() => setDarkMode(prev => !prev)}
+            <button
+              onClick={() => setTheme(darkMode ? "light" : "dark")}
               className="p-1.5 text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white text-xs border border-zinc-200 dark:border-zinc-800 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-colors font-bold"
               title="Toggle Dark Mode (Shortcut: D)"
+              suppressHydrationWarning
             >
-              {darkMode ? "☀️ Light" : "🌙 Dark"}
+              {mounted ? (darkMode ? "☀️ Light" : "🌙 Dark") : "🌙 Dark"}
             </button>
             <Button variant="ghost" className="text-sm font-bold text-zinc-600 dark:text-zinc-300 hover:text-[#6b4bf2] hover:bg-transparent">
               Book a Demo
