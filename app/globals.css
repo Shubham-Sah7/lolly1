@@ -45,6 +45,14 @@
     --radius-2xl: calc(var(--radius) * 1.8);
     --radius-3xl: calc(var(--radius) * 2.2);
     --radius-4xl: calc(var(--radius) * 2.6);
+    --color-brand-purple: #6b4bf2;
+    --color-brand-purple-hover: #5636dd;
+    --color-brand-purple-solid: #aa9ef4;
+    --color-brand-bg-cream: #fbfaf7;
+    --color-brand-light-green: #e7fca7;
+    --color-brand-light-purple: #ebe5ff;
+    --color-brand-light-cyan: #dff6f9;
+    --color-brand-dark-navy: #0b0c10;
 }
 
 :root {
@@ -124,6 +132,7 @@
     @apply bg-background text-foreground;
     }
   html {
-    @apply font-sans;
+    @apply font-sans scroll-smooth;
+    scroll-padding-top: 5rem;
     }
 }
